@@ -1,0 +1,91 @@
+"""
+CONSTANTS: FIRST_PRICE = 500, COACH_PRICE = 199, TAX_RATE = 0.0775
+
+FUNCTION make_reservation(seats, base_price, class_name)
+    IF every seat in seats is taken THEN
+        Display "No new reservations can be made in" class_name
+        RETURN
+    Read desired row and seat number
+    IF seats[row][seat] is not empty THEN
+        Display "Seat taken — reservation refused"
+        RETURN
+    Read passenger name and age
+    total = CALL calculate_fare(age, base_price)
+    Display total (fare + tax)
+    paid = CALL process_payment(total)
+    IF paid is False THEN
+        Display "Insufficient funds — not booked"
+        RETURN
+    Set seats[row][seat] = full passenger name
+    Display "Reservation confirmed"
+END FUNCTION
+
+
+FUNCTION calculate_fare(age, base_price)
+    fare = base_price
+    IF age < 7 OR age >= 65 THEN
+        fare = fare * 0.80          // 20% discount
+    total = fare + (fare * TAX_RATE)
+    RETURN total
+END FUNCTION
+
+
+FUNCTION process_payment(total)
+    Read amount tendered
+    IF amount < total THEN
+        RETURN False
+    IF amount > total THEN
+        CALL compute_change(amount - total)
+    RETURN True
+END FUNCTION
+
+
+FUNCTION compute_change(change_amount)
+    cents = ROUND(change_amount * 100)      // work in whole cents
+    FOR each denomination in [10000, 2000, 500, 100, 25, 10, 5, 1]
+        count = cents DIVIDED BY denomination (integer division)
+        cents = cents MOD denomination
+        IF count > 0 THEN display count and denomination name
+END FUNCTION
+
+
+FUNCTION change_reservation()
+    Read compartment and seat location to change
+    IF that seat is empty THEN display "No reservation there" and RETURN
+    Set that seat = empty string        // seat is now open, no refund
+    Ask which compartment to rebook into
+    CALL make_reservation(chosen seats, chosen price, class_name)
+END FUNCTION
+
+
+FUNCTION print_seating(seats)
+    FOR each row in seats
+        FOR each seat in row
+            IF seat is empty THEN print row/seat as "OPEN"
+            ELSE print row/seat with name[first 12 characters]
+    IF all seats taken THEN display "No new reservations can be made"
+END FUNCTION
+
+START (main)
+    Create first_class as 2x4 2D list of empty strings
+    Create coach as 10x4 2D list of empty strings
+
+    LOOP forever
+        Display menu (1 first class, 2 coach, 3 change, 4 print, 5 quit)
+        Read choice
+
+        IF choice is 1 THEN
+            CALL make_reservation(first_class, FIRST_PRICE, "First Class")
+        ELSE IF choice is 2 THEN
+            CALL make_reservation(coach, COACH_PRICE, "Coach")
+        ELSE IF choice is 3 THEN
+            CALL change_reservation()
+        ELSE IF choice is 4 THEN
+            CALL print_seating(first_class) and print_seating(coach)
+        ELSE IF choice is 5 THEN
+            EXIT loop
+        ELSE
+            Display "Invalid choice"
+    END LOOP
+END
+"""

@@ -1,0 +1,24 @@
+Inputs: 
+    menu choice
+    seat location (row and seat, or seat number)
+    passenger name
+    passenger age
+    payment amount
+
+Information being processed:
+    check seat availability
+    calculate price (base price, 20% discount if passenger younger than 7 or older than 65, 
+        total plus tax (constant))
+    compare payment to total (book or reject)
+    compute the change denominations ($100, $50, $20, $10, $5, $1, quarters, dimes, nickels, pennies)
+    make seat available and book new when change requested
+
+Information Outputs:
+    seating chart (available and taken with truncated names (12 chars), empty seats are empty strings)
+    confirmation or rejection messages
+    total cost
+    change with breakdown (how many 100s, ...)
+    message when no seats are available
+
+Data Structures:
+    two 2D lists (one for first class, one for coach)
